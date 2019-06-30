@@ -16,6 +16,18 @@ NT          10k       ,     30k
 
 Since there are only 4 customers having balance<100, and living in hk island, so "balance<100" and "Living in Island" is a toxic combination.
 
+Suppose each cusomter i has attribute data D(i,j) where i = 1 to 1 million, and j = 1, 2
 The search count matrix can be computed by the following MapReduce phase:
 Map Phase:
-    eimit( [
+    For each csutomer i, emit( [ K1(D(i,1) , K2(Di,2) ] , 1)
+    e.g. emit( [ "balance>=100" , "Island" ] , 1 )
+Reduce by Key
+    reduce( [Ki1,Ki2] , sum(Vi) )
+    e.g. reduce( [K11,K12]=["balance<100","Island" , sum=4 ) => 4
+
+In general case:
+Suppose each cusomter i has attribute data D(i,j) where i = 1 to n and j = 1, 2, ..p.
+Filter function is Kj(Dij) 
+Matrix of the number of customer with filter on condition K1, K2, ...Kp can be obtained by MapReduce:
+Mapper: emit( [ Kj(Dij) ] , 1 )
+Reduce by key ( [Kj(Dij)] , sum(Vi) )

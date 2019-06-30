@@ -5,14 +5,10 @@ Problem Definition: If the search count N on the combination of filter on custom
 
 
 Example Case:
-
-Customer 1 has account balance 500k, and live in Wan Chai.  The Search filter combination is: low income and living district.
-
-Filter 1 of low income K1 is defined as account balance < 100, and balance >=100, so in case of customer 1, filter function K1(500k) = ">= 100".
-
-Filter 2 of living district is defined as (Island,Kowloon, NT), so in case of customer 1, filter function K2("Wan Chai") = "Island".
-
-If we have ~1 million customer data, and count them based on the 2 attribute filters, we will get the search count matrix, e.g.
+<br/>Customer 1 has account balance 500k, and live in Wan Chai.  The Search filter combination is: low income and living district.
+<br/>Filter 1 of low income K1 is defined as account balance < 100, and balance >=100, so in case of customer 1, filter function K1(500k) = ">= 100".
+<br/>Filter 2 of living district is defined as (Island,Kowloon, NT), so in case of customer 1, filter function K2("Wan Chai") = "Island".
+<br/>If we have ~1 million customer data, and count them based on the 2 attribute filters, we will get the search count matrix, e.g.
 
 | District | balance < 100 | balance >= 100 |
 | --- | --- | --- |
@@ -27,26 +23,27 @@ Since there are only 4 customers having balance<100, and living in hk island, so
 Suppose each cusomter i has attribute data D(i,j) where i = 1 to 1 million, and j = 1, 2
 The search count matrix can be computed by the following MapReduce phase:
 
-Map Phase:
-
+###Map Phase:
+```
 For each csutomer i, emit( [ K1(D(i,1) , K2(Di,2) ] , 1)
-
 e.g. emit( [ "balance>=100" , "Island" ] , 1 )
-
-Reduce by Key
-
+```
+###Reduce by Key
+```
 reduce( [Ki1,Ki2] , sum(Vi) )
-
 e.g. reduce( [K11,K12]=["balance<100","Island" , sum=4 ) => 4
+```
+##In general case:
 
-In general case:
+<br/>Suppose each cusomter i has attribute data D(i,j) where i = 1 to n and j = 1, 2, ..p.
+<br/>Filter function is Kj(Dij) 
+<br/>Matrix of the number of customer with filter on condition K1, K2, ...Kp can be obtained by MapReduce:
 
-Suppose each cusomter i has attribute data D(i,j) where i = 1 to n and j = 1, 2, ..p.
-
-Filter function is Kj(Dij) 
-
-Matrix of the number of customer with filter on condition K1, K2, ...Kp can be obtained by MapReduce:
-
-Mapper: emit( [ Kj(Dij) ] , 1 )
-
-Reduce by key ( [Kj(Dij)] , sum(Vi) )
+###Mapper: 
+```
+emit( [ Kj(Dij) ] , 1 )
+```
+###Reduce by key 
+```
+Reduce( [Kj(Dij)] , sum(Vi) )
+```

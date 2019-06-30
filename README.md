@@ -16,6 +16,9 @@ NT          10k       ,     30k
 
 Since there are only 4 customers having balance<100, and living in hk island, so "balance<100" and "Living in Island" is a toxic combination.
 
+
+
+
 Suppose each cusomter i has attribute data D(i,j) where i = 1 to 1 million, and j = 1, 2
 The search count matrix can be computed by the following MapReduce phase:
 Map Phase:

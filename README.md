@@ -47,3 +47,9 @@ emit( [ Kj(Dij) ] , 1 )
 ```
 Reduce( [Kj(Dij)] , sum(Vi) )
 ```
+
+### Test Spark Program
+generate.py
+```
+gcloud dataproc jobs submit pyspark generate.py --cluster=mycluster --region=europe-west1 -- 1000000
+```
